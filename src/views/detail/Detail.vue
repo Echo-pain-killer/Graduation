@@ -5,6 +5,7 @@
      @titleClick="titleClick" 
      ref="detailNav"/>
      <scroll ref="scroll" class="content" @scroll="contentScroll" :probe-type="3">
+         {{this.$store.state.cartList.length}}
         <detail-swiper :swiper-img="swiperImg"/>
         <base-info :goods="goods"/>
         <DetailShopInfo :shop="shop"/>
@@ -13,7 +14,7 @@
         <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
         <GoodsList ref="recommend" :goods="recommendList"/>
      </scroll>
-     <detail-bottom-bar/>
+     <detail-bottom-bar @addCart="addToCart"/>
   </div>
 </template>
 
@@ -89,6 +90,16 @@ import {debounce} from 'common/utile'
                     this.$refs.detailNav.currentIndex = this.currentIndex
                 }
            }
+       },
+       addToCart() {
+           const product = {}
+           product.iid = this.iid
+           product.img = this.swiperImg[0]
+           product.title = this.goods.title
+           product.desc = this.goods.desc
+           product.price = this.goods.realPrice
+
+           this.$store.dispatch('addCart', product)
        }
    },
    created() {
