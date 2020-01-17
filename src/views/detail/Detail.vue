@@ -1,15 +1,19 @@
 <template>
   <div id="detail">
-     <detail-nav-bar class="detail-nav-bar"/>
-     <scroll ref="scroll" class="content">
+     <detail-nav-bar 
+     class="detail-nav-bar" 
+     @titleClick="titleClick" 
+     ref="detailNav"/>
+     <scroll ref="scroll" class="content" @scroll="contentScroll" :probe-type="3">
         <detail-swiper :swiper-img="swiperImg"/>
         <base-info :goods="goods"/>
         <DetailShopInfo :shop="shop"/>
         <detail-goods-info :detailInfo="detailInfo" @imageLoad="imageLoad"/>
-        <detail-params-info :paramInfo="paramInfo"/>
+        <detail-params-info :paramInfo="paramInfo" ref="params"/>
         <detail-comment-info ref="comment" :commentInfo="commentInfo"/>
         <GoodsList ref="recommend" :goods="recommendList"/>
      </scroll>
+     <detail-bottom-bar/>
   </div>
 </template>
 
@@ -22,6 +26,7 @@ import DetailGoodsInfo from './childComp/detailGoodsInfo'
 import DetailParamsInfo from './childComp/detailParamsInfo'
 import DetailCommentInfo from './childComp/detailCommentInfo'
 import GoodsList from 'components/content/goods/GoodsList'
+import DetailBottomBar from './childComp/detailBottomBar'
 
 import Scroll from 'components/common/scroll/Scroll'
 
@@ -38,7 +43,8 @@ import {debounce} from 'common/utile'
        DetailGoodsInfo,
        DetailParamsInfo,
        DetailCommentInfo,
-       GoodsList
+       GoodsList,
+       DetailBottomBar
    },
    data() {
        return {
@@ -50,13 +56,39 @@ import {debounce} from 'common/utile'
            getThemeTop: null,
            paramInfo: {},
            commentInfo: {},
-           recommendList: []
+           recommendList: [],
+           themeTopY: [],
+           getThemeTop: null,
+           currentIndex: 0
        }
    },
    methods: {
        imageLoad() {
            this.$refs.scroll.refresh()
-        //    this.getThemeTop()
+           this.getThemeTop()
+       },
+       titleClick(index) {
+           this.$refs.scroll.scrollTo(0 , -this.themeTopY[index]+44 , 500)
+       },
+       contentScroll(position) {
+           const positionY = -position.y
+            /**
+             * 让positionY与每个themeY[0, 5092, 5768, 6057]作判断
+             * 如果  positionY  大于 0 小于 5092，则index = 0
+             * 如果  positionY  大于 5092 小于 5768，则index = 1
+             * 如果  positionY  大于 5768 小于 6057，则index = 2
+             * 
+             * 如果  positionY  大于 6057，则index = 3
+             */
+           for(let i=0 ; i < this.themeTopY.length - 1 ; i++){
+               const length = this.themeTopY.length
+               if(this.currentIndex !==i && (i < length - 1 && positionY < this.themeTopY[i+1] && positionY >= this.themeTopY[i])){
+            //    if(this.currentIndex !==i && ((i < length - 1 && positionY < this.themeTopY[i+1] && positionY >= this.themeTopY[i])
+            //     || (i === length-1 && positionY >= this.themeTopY[i]))){
+                    this.currentIndex = i
+                    this.$refs.detailNav.currentIndex = this.currentIndex
+                }
+           }
        }
    },
    created() {
@@ -85,17 +117,17 @@ import {debounce} from 'common/utile'
             this.recommendList = res.data.list
         })
 
-        // this.getThemeTop = debounce(() => {
-        //     //将导航栏每个模块的高度保存到themeTopY
-        //         this.themeTopY = []
-        //         this.themeTopY.push(0)
-        //         this.themeTopY.push(this.$refs.params.$el.offsetTop)
-        //         this.themeTopY.push(this.$refs.comment.$el.offsetTop)
-        //         this.themeTopY.push(this.$refs.recommend.$el.offsetTop)
-        //         //完成滚动内容显示对应标题时为了简化IF判断而添加JS中能编译的最大值
-        //         this.themeTopY.push(Number.MAX_VALUE)
-        //         //console.log(this.themeTopY)
-        // })
+        this.getThemeTop = debounce(() => {
+            //将导航栏每个模块的高度保存到themeTopY
+                this.themeTopY = []
+                this.themeTopY.push(0)
+                this.themeTopY.push(this.$refs.params.$el.offsetTop)
+                this.themeTopY.push(this.$refs.comment.$el.offsetTop)
+                this.themeTopY.push(this.$refs.recommend.$el.offsetTop)
+                //完成滚动内容显示对应标题时为了简化IF判断而添加JS中能编译的最大值
+                this.themeTopY.push(Number.MAX_VALUE)
+                //console.log(this.themeTopY)
+        })
    }
 }
 </script>

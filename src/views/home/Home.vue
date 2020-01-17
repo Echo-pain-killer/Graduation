@@ -3,7 +3,7 @@
       <nav-bar id="home-nav"><div slot="center">购物街</div></nav-bar>
        <tab-control :titles='titles'
         @tabClick="tabClick"
-        ref="tabControl"
+        ref="tabControl2"
         class="tab-control"
         v-show="showTabControl"/>
     <scroll 
@@ -18,7 +18,7 @@
       <FeatureView/>
       <tab-control :titles='titles'
         @tabClick="tabClick"
-        ref="tabControl"/>
+        ref="tabControl1"/>
       <goods-list :goods="goods[currentType].list"/>
     </scroll>
       <back-top @click.native="backTopClick" v-show="showBackTop"/>
@@ -107,6 +107,9 @@ import {debounce} from 'common/utile'
            this.currentType = 'sell'
            break
        }
+
+       this.$refs.tabControl1.currentIndex = index
+       this.$refs.tabControl2.currentIndex = index
      },
 
      backTopClick() {
@@ -124,7 +127,7 @@ import {debounce} from 'common/utile'
      },
 
      swiperImgLoad() {
-       this.tabOffsetTop = this.$refs.tabControl.$el.offsetTop
+       this.tabOffsetTop = this.$refs.tabControl1.$el.offsetTop
      }
    },
 }
