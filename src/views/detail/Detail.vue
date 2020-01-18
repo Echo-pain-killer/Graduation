@@ -5,7 +5,6 @@
      @titleClick="titleClick" 
      ref="detailNav"/>
      <scroll ref="scroll" class="content" @scroll="contentScroll" :probe-type="3">
-         {{this.$store.state.cartList.length}}
         <detail-swiper :swiper-img="swiperImg"/>
         <base-info :goods="goods"/>
         <DetailShopInfo :shop="shop"/>
