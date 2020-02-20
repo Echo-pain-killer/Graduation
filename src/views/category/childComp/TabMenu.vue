@@ -35,6 +35,7 @@ import Scroll from 'components/common/scroll/Scroll'
    methods: {
        itemClick(index) {
            this.currentIndex = index
+           this.$emit('selectItem',index)
        }
    }
 }
