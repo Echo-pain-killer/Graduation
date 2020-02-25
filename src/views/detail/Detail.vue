@@ -124,6 +124,7 @@ import {debounce} from 'common/utile'
        })
 
         getRecommend().then(res => {
+            console.log(res)
             this.recommendList = res.data.list
         })
 

@@ -4,6 +4,7 @@
           <div slot="left" class="back" @click="backClick">
               <img src="~assets/img/common/back.svg" alt="">
           </div>
+          
           <div slot="center" class="title">
               <div v-for="(item,index) in titles" 
                    :key="item.id" 
@@ -59,4 +60,5 @@ import NavBar from 'components/common/navbar/NavBar'
 .back {
     padding-top: 5px;
 }
+
 </style>
