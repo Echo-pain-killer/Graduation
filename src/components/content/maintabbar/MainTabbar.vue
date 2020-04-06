@@ -1,5 +1,8 @@
 <template>
   <tab-bar>
+      <tab-bar-item class="logo">
+          <img slot="item-icon" src="~assets/img/common/web-logo.png">
+      </tab-bar-item>
       <tab-bar-item path='/home'>
           <img slot="item-icon" src="~assets/img/tabbar/home.svg">
           <img slot="item-icon-active" src="~assets/img/tabbar/home_active.svg" alt="">
@@ -37,5 +40,9 @@ import TabBarItem from "components/common/tabbar/TabBarItem"
 </script>
 
 <style scoped>
-
+.logo img{
+    width: 49px;
+    height: 25px;
+    margin-top: 10px;
+}
 </style>

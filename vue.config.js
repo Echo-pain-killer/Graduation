@@ -1,6 +1,6 @@
 module.exports = {
+    productionSourceMap: false,
     publicPath : './',
-    outputDir :'dist',
     configureWebpack: {
       resolve: {
         alias: {

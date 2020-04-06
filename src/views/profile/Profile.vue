@@ -25,7 +25,6 @@
         <div class="account-info">我的积分</div>
       </div>
     </section>
-
     <!--3.封装成一个整体-->
     <list-view :list-data="orderList" class="order-list"></list-view>
     <list-view :list-data="serviceList" class="service-list"></list-view>

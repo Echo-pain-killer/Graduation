@@ -8,8 +8,8 @@ const store = new Vuex.Store({
         cartList: []
     },
     mutations: {
-        addConter() {
-            oldProduct.count += 1
+        addConter(oldProduct) {
+           oldProduct.count += 1
         },
         addToCart(state, payLoad) {
             state.cartList.push(payLoad)
